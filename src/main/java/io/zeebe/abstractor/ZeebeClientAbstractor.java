@@ -1,4 +1,5 @@
 package io.zeebe.abstractor;
+import io.CallMaker;
 import io.zeebe.client.ZeebeClient;
 import io.zeebe.client.api.clients.JobClient;
 import io.zeebe.client.api.events.DeploymentEvent;
@@ -9,21 +10,51 @@ import io.zeebe.client.api.subscription.JobWorker;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
-public class Application {
+public class ZeebeClientAbstractor {
 
-    public static void main(String[] args)
+    public void clientInit(String BrokerAddress)
     {
         final ZeebeClient client = ZeebeClient.newClientBuilder()
-                .brokerContactPoint("127.0.0.1:26500")
+                .brokerContactPoint(BrokerAddress)
+                //.brokerContactPoint("127.0.0.1:26500")
                 .build();
 
+        //do_WorkflowLogic(client);
+
+        // after the workflow instance is created
+        final JobWorker jobWorker = client.jobClient()
+                .newWorker()
+                .jobType("http")
+                .handler((jobClient, job) ->
+                {
+                    final Map<String, Object> headers = job.getCustomHeaders();
+                    final String method = (String) headers.get("method");
+                    String url=headers.get("url").toString();
+                    String response=null;
+                    //URLConnectionReader urlConnectionReader=new URLConnectionReader();
+                    try {
+                        //add method for e.g. POST
+                        response=CallMaker.callURL(url);
+                        //response= urlConnectionReader.callURL(url);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //JSONObject serializedResp=new JSONObject(response);
+                    jobClient.newCompleteCommand(job.getKey())
+                            //change it to payload
+                            .payload(headers)
+                            .send()
+                            .join();
+                })
+                .open();
+    }
+
+    private static void do_WorkflowLogic(ZeebeClient client) {
         final DeploymentEvent deployment = client.workflowClient()
                 .newDeployCommand()
                 .addResourceFromClasspath("http-get.bpmn")
@@ -48,40 +79,8 @@ public class Application {
 
         System.out.println("Workflow instance created. Key: " + workflowInstanceKey);
 
-
-        // after the workflow instance is created
-        final JobWorker jobWorker = client.jobClient()
-                .newWorker()
-                .jobType("http")
-                //.jobType("bar")
-                .handler((jobClient, job) ->
-                {
-
-                    final Map<String, Object> headers = job.getCustomHeaders();
-
-                    final String method = (String) headers.get("method");
-                    String ur=headers.get("url").toString();
-                    String response=null;
-                    URLConnectionReader urlConnectionReader=new URLConnectionReader();
-                    try {
-                        response= urlConnectionReader.callURL(ur);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-
-                    //JSONObject serializedResp=new JSONObject(response);
-                    jobClient.newCompleteCommand(job.getKey())
-                            .payload(headers)
-                            .send()
-                            .join();
-/*                    jobClient.newCompleteCommand(job.getKey())
-                            .send()
-                            .join();*/
-                })
-                .open();
     }
+
     private static class ExampleJobHandler implements JobHandler {
         @Override
         public void handle(final JobClient client, final ActivatedJob job) {

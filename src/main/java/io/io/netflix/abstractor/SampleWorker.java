@@ -4,6 +4,7 @@ import com.netflix.conductor.client.worker.Worker;
 import com.netflix.conductor.common.metadata.tasks.Task;
 import com.netflix.conductor.common.metadata.tasks.TaskResult;
 import com.netflix.conductor.common.metadata.tasks.TaskResult.Status;
+import io.CallMaker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,14 +34,16 @@ public class SampleWorker implements Worker {
         String req=null;
 
         try {
-            req=makeRequest("task.url");
-        } catch (IOException e) {
+            req= CallMaker.callURL("task.url");
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
+
         System.out.printf("Executing %s%n", taskDefName);
         TaskResult result = new TaskResult(task);
+
         result.setStatus(Status.COMPLETED);
 
         //Register the output of the task
@@ -51,23 +54,5 @@ public class SampleWorker implements Worker {
 
         return result;
     }
-
-
-    public String makeRequest(String url) throws IOException {
-        java.net.URL url1 = new URL(url);
-        URLConnection yc = url1.openConnection();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        yc.getInputStream()));
-        String inputLine;
-        StringBuffer results=new StringBuffer();
-        while ((inputLine = in.readLine()) != null)
-        {
-            results.append(inputLine);
-        }
-        in.close();
-        return  results.toString();
-    }
-
 
 }
