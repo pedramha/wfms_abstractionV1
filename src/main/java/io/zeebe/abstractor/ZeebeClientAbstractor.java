@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class ZeebeClientAbstractor {
 
-    public void clientInit(String BrokerAddress)
+    public void clientInit(String BrokerAddress, int Port)
     {
         final ZeebeClient client = ZeebeClient.newClientBuilder()
-                .brokerContactPoint(BrokerAddress)
+                .brokerContactPoint(BrokerAddress + ":" + Port)
                 //.brokerContactPoint("127.0.0.1:26500")
                 .build();
 

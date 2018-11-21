@@ -1,9 +1,17 @@
-
-import static org.springframework.boot.SpringApplication.run;
-
 public class Application {
-    public static void main(String[] args) throws Exception {
-        /*run(Application.class,args);*/
-        ClientAbstractor.initClient();
+    public static void main(final String[] args) {
+        String host = "localhost";
+        int port = 8080;
+        Proxy.start(host, port);
+
+/*         Undertow server = Undertow.builder()
+                 .addHttpListener(port,host)
+                 .setHandler(exchange ->
+                         ClientAbstractor.initClient(exchange.getHostName(),exchange.getHostPort()))
+                 .build();
+        server.start();*/
     }
 }
+
+
+

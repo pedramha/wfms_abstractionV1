@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class ConductorAbstractor {
 
-    public void clientInit(String BrokerAddress) throws Exception {
+    public void clientInit(String BrokerAddress, int Port) throws Exception {
 
         TaskClient taskClient = new TaskClient();
-        taskClient.setRootURI(BrokerAddress);
+        taskClient.setRootURI(BrokerAddress + ":" + Port);
         //taskClient.setRootURI("http://localhost:8080/api/");		//Point this to the server API
 
         int threadCount = 1;			//number of threads used to execute workers.  To avoid starvation, should be same or more than number of workers
