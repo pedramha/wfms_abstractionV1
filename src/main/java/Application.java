@@ -1,7 +1,7 @@
 public class Application {
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws Exception {
         String host = "localhost";
-        int port = 8080;
+        int port = 8181;
         Proxy.start(host, port);
 
 /*         Undertow server = Undertow.builder()
