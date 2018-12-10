@@ -1,3 +1,4 @@
+/*
 package io.io.netflix.abstractor;
 
 import com.netflix.conductor.client.worker.Worker;
@@ -12,10 +13,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+*/
 /**
  * @author Viren
  *
- */
+ *//*
+
 public class SampleWorker implements Worker {
 
     private String taskDefName;
@@ -55,4 +58,4 @@ public class SampleWorker implements Worker {
         return result;
     }
 
-}
+}*/

@@ -4,18 +4,22 @@ import com.uber.cadence.client.WorkflowClient;
 import com.uber.cadence.workflow.Workflow;
 import com.uber.cadence.workflow.WorkflowMethod;
 
+import static io.cadence.abstractor.CadenceAbstractor.TASK_LIST;
+
 public class WorkflowInst {
 
-    static final String TASK_LIST = "RestActivity";
 
-    public String wfInit(String ServiceAddres, String Domain, String Host, int Port) {
-        // Start a workflow execution. Usually this is done from another program.
-        WorkflowClient workflowClient = WorkflowClient.newInstance(Host, Port, Domain);
+    public String wfInit(String host, int Port, String Domain) {
+
+
+        WorkflowClient workflowClient = WorkflowClient.newInstance(host, Port, Domain);
         // Get a workflow stub using the same task list the worker uses.
         RESTWorkflow workflow = workflowClient.newWorkflowStub(RESTWorkflow.class);
         // Execute a workflow waiting for it to complete.
-        String REST = workflow.getREST(ServiceAddres);
-        return REST;
+        //the URL of the service is indicated
+        String serviceURL = "https://jsonplaceholder.typicode.com/posts/1";
+        String response = workflow.getREST(serviceURL);
+        return response;
     }
 
 
@@ -31,11 +35,6 @@ public class WorkflowInst {
      * RESTWorkflow implementation that calls RESTsActivities#composeREST.
      */
     public static class RESTWorkflowImpl implements RESTWorkflow {
-        /**
-         * Activity stub implements activity interface and proxies calls to it to Cadence activity
-         * invocations. Because activities are reentrant, only a single stub can be used for multiple
-         * activity invocations.
-         */
         private final RestActivity.RESTActivities activities =
                 Workflow.newActivityStub(RestActivity.RESTActivities.class);
 

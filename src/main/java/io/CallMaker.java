@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class CallMaker {
+    //This function makes an HTTP call to the url provided.
     public static String callURL(String url) throws Exception {
         URL _url = new URL(url);
         URLConnection yc = _url.openConnection();
@@ -14,8 +15,7 @@ public class CallMaker {
         String inputLine;
         StringBuffer results=new StringBuffer();
 
-        while ((inputLine = in.readLine()) != null)
-        {
+        while ((inputLine = in.readLine()) != null) {
             results.append(inputLine);
         }
         in.close();

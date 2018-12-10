@@ -9,7 +9,6 @@
         <zeebe:taskDefinition type="http" />
         <zeebe:taskHeaders>
           <zeebe:header key="url" value="https://jsonplaceholder.typicode.com/posts/1" />
-	  <zeebe:header key="method" value="POST" />
         </zeebe:taskHeaders>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0kgp4ek</bpmn:incoming>

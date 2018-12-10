@@ -1,21 +1,25 @@
 package io.cadence.abstractor;
 
 public class CadenceAbstractor {
-    private String Domain;
-    private String Task_List;
+    public static final String DOMAIN = "sample";
+    static final String TASK_LIST = "RestActivity";
 
-    public void clientInit(String ServiceAddres, String Host, int Port) {
+    public void clientInit(String host, int Port) {
         RestActivity restActivity = new RestActivity();
-        restActivity.workerInit(Host, Port, Domain, Task_List);
+        restActivity.workerInit(host, Port, DOMAIN, TASK_LIST);
         WorkflowInst workflowInst = new WorkflowInst();
-        workflowInst.wfInit(ServiceAddres, Domain, Host, Port);
+
+        //The URL of a random service to be called.
+
+
+        workflowInst.wfInit(host, Port, DOMAIN);
     }
 
-    public void setDomain(String domain) {
+/*    public void setDomain(String domain) {
         Domain = domain;
     }
 
     public void setTask_List(String task_List) {
         Task_List = task_List;
-    }
+    }*/
 }
