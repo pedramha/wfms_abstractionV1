@@ -6,8 +6,8 @@ To start, please do the following steps:
 * Go to the respective folder:  
     cd wfms_abstractionV1
 * Run the following commands:  
-    Mvn clean install  
-    Java –jar 
+    mvn clean install  
+    java -jar target/wfms_abstractionV1-1.0-SNAPSHOT.jar
 
 Now the worker is polling the server for HTTP tasks, and as soon as the workflow reaches the HTTP tasks the worker performs the HTTP call to the respective HTTP endpoint.  
 A short video which demonstrates how the tool functions in debugging mode can be found at the following address:
