@@ -1,4 +1,4 @@
-# wfms_abstractionV1
+# Orchestration Engine Abstractor
 The Orchestration Engines (currently Cadence and Zeebe supported) have to be started before starting this Generic Worker.
 To start, please do the following steps:
 * First download the source code:  
